@@ -12,16 +12,11 @@ var connection = mysql.createConnection({
 var amountOwed;
 
 
-//Establish Connection
 connection.connect(function(err){
 	if (err) throw err;
 	console.log('connected as id: ' + connection.threadId)
 });
 
-//FUNCTIONS
-//=============================================================================
-
-//Displays all items available in store and then calls the place order function
 function showProducts(){
 	connection.query('SELECT * FROM products', function(err, res){
 		if (err) throw err;
@@ -37,7 +32,6 @@ function showProducts(){
 		})
 }
 
-//Prompts the user to place an order, fulfills the order, and then calls the new order function
 function placeOrder(){
 	inquirer.prompt([{
 		name: 'selectId',
@@ -73,7 +67,6 @@ function placeOrder(){
 			console.log('Thanks for your order');
 			console.log('You owe $' + amountOwed);
 			console.log('');
-			//update products table
 			connection.query('UPDATE products SET ? Where ?', [{
 				StockQuantity: res[0].StockQuantity - answer.selectQuantity
 			},{
@@ -87,7 +80,6 @@ function placeOrder(){
 }, function(err, res){})
 };
 
-//Allows the user to place a new order or end the connection
 function newOrder(){
 	inquirer.prompt([{
 		type: 'confirm',
